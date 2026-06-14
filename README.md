@@ -89,6 +89,32 @@ De los 168 registros del Cluster 3, se identificaron **78 casos** con monto refe
 
 Estos casos presentan sobrecostos de entre 5 y 17 veces el monto presupuestado, en entidades como PETROPERÚ S.A., universidades nacionales y gobiernos regionales.
 
+# Comparación con DBSCAN
+
+Como complemento al modelo K-means, se aplicó **DBSCAN** (Density-Based Spatial Clustering of Applications with Noise), un algoritmo basado en conectividad por densidad que identifica automáticamente los puntos que no pertenecen a ninguna región densa, clasificándolos como "ruido".
+
+### Consideraciones de escalabilidad
+
+DBSCAN requiere calcular distancias entre todos los pares de puntos, lo que resultó en un error de memoria al aplicarlo sobre el dataset completo (267,111 registros). Por esta razón, se aplicó sobre una **muestra aleatoria de 10,000 registros** (semilla fija para reproducibilidad), siguiendo la misma estrategia utilizada para el dendrograma jerárquico.
+
+### Resultados (muestra de 10,000 registros)
+
+| Cluster DBSCAN | Registros | diferencia_pct_cap (media) | dias_proceso (media) | Interpretación |
+|---|---|---|---|---|
+| 0 | 9,844 | +7.7% | 28.4 | Comportamiento normal (zona densa) |
+| -1 (ruido) | 129 | +19.4% | 269.8 | Procesos de duración atípicamente larga |
+| 1 | 27 | -97.0% | 548.8 | Procesos extremadamente largos con pago muy por debajo de lo presupuestado |
+
+### K-means vs. DBSCAN: hallazgos complementarios
+
+Ambos algoritmos identifican anomalías, pero con sensibilidades distintas:
+
+- **K-means (k=4)** fue más sensible a anomalías de **magnitud**, destacando un grupo de 168 contrataciones (0.06%) con sobrecostos extremos (+369.8% en promedio).
+- **DBSCAN** fue más sensible a anomalías de **densidad/tiempo**, destacando grupos de contrataciones con duraciones de proceso muy por encima de lo habitual (270 a 548 días frente a un promedio general de ~32 días), independientemente de si el monto se desvió mucho del presupuesto.
+
+Esto sugiere que ambos enfoques son complementarios: K-means resulta útil para priorizar casos por **sobrecosto**, mientras que DBSCAN resulta útil para priorizar casos por **duración anómala del proceso**, una dimensión que el primer modelo no destacaba con la misma claridad.
+
+
 ## Visualizaciones
 
 El notebook incluye:
