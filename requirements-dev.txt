@@ -1,0 +1,4 @@
+# requirements-dev.txt — Entorno de desarrollo completo
+-r requirements.txt
+jupyterlab>=4.0
+ipykernel>=6.0

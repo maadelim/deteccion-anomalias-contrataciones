@@ -8,9 +8,12 @@ data/processed/*.csv
 # Checkpoints de Jupyter
 .ipynb_checkpoints/
 
-# Cache de Python
+# Cache de   Python
 __pycache__/
 *.pyc
+*.pyo
+*.egg-info/
 
 # Archivos del sistema
 .DS_StoreS
+Thumbs.db
