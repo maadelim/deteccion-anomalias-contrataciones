@@ -140,13 +140,32 @@ deteccion-anomalias-contrataciones/
 │   ├── raw/              # Archivos originales (no incluidos, ver instrucciones de descarga)
 │   └── processed/
 ├── notebooks/
-│   └── 01_exploracion.ipynb
+│   ├── 01_exploracion.ipynb   # Análisis exploratorio completo, paso a paso
+│   └── 02_pipeline.ipynb      # Pipeline limpio y reproducible usando los módulos de src/
+├── src/
+│   ├── data_loader.py     # Carga y unificación de los datasets anuales
+│   ├── preprocessing.py   # Limpieza de datos y feature engineering
+│   └── clustering.py      # Funciones de clustering (K-means y DBSCAN)
 ├── results/
 │   └── casos_sospechosos.csv
-├── src/
 ├── requirements.txt
 └── README.md
 ```
+### Sobre los dos notebooks
+ 
+- **`01_exploracion.ipynb`**: contiene el proceso completo de análisis exploratorio, incluyendo la justificación de cada decisión (tratamiento de outliers, elección de variables, comparación de modelos). Es el notebook recomendado para entender el razonamiento detrás del proyecto.
+- **`02_pipeline.ipynb`**: una vez validado el enfoque en el notebook exploratorio, la lógica se modularizó en funciones reutilizables dentro de `src/`. Este notebook ejecuta el pipeline completo (carga → limpieza → clustering → visualización) en pocas líneas, facilitando su reproducción o integración en otros flujos de trabajo.
+  
+### Sobre los módulos de `src/`
+ 
+| Módulo | Función principal | Descripción |
+|---|---|---|
+| `data_loader.py` | `cargar_adjudicaciones()` | Carga los 4 archivos anuales de adjudicaciones y los unifica en un solo DataFrame |
+| `preprocessing.py` | `limpiar_y_preparar()` | Elimina nulos en columnas críticas, separa casos con monto referencial igual a cero, y crea las variables `diferencia_monto`, `diferencia_pct`, `diferencia_pct_cap` y `dias_proceso` |
+| `clustering.py` | `aplicar_kmeans()`, `aplicar_dbscan_muestra()` | Escala las variables y aplica K-means sobre el dataset completo; aplica DBSCAN sobre una muestra aleatoria por limitaciones de memoria |
+ 
+Esta separación permite que el pipeline sea fácilmente extensible: por ejemplo, incorporar un nuevo dataset solo requiere agregar una función en `data_loader.py`, sin modificar la lógica de limpieza o clustering.
+ 
 
 ## Cómo reproducir el proyecto
 
