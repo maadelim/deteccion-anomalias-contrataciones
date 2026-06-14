@@ -1,0 +1,16 @@
+# Entorno virtual
+venv/
+
+# Archivos de datos (pesados, no van a GitHub)
+data/raw/*.xlsx
+data/processed/*.csv
+
+# Checkpoints de Jupyter
+.ipynb_checkpoints/
+
+# Cache de Python
+__pycache__/
+*.pyc
+
+# Archivos del sistema
+.DS_Store
