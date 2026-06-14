@@ -114,6 +114,41 @@ Ambos algoritmos identifican anomalías, pero con sensibilidades distintas:
 
 Esto sugiere que ambos enfoques son complementarios: K-means resulta útil para priorizar casos por **sobrecosto**, mientras que DBSCAN resulta útil para priorizar casos por **duración anómala del proceso**, una dimensión que el primer modelo no destacaba con la misma claridad.
 
+## Análisis adicional: Contrataciones Directas
+ 
+Como extensión del análisis, se incorporó el dataset de **Contrataciones Directas** (procesos adjudicados sin concurso competitivo, bajo causales como situación de emergencia, proveedor único o desabastecimiento inminente), con el objetivo de evaluar si los casos de sobrecosto extremo (Cluster 3) estaban asociados a este tipo de procesos.
+ 
+### Metodología
+ 
+Se unificaron los archivos de Contrataciones Directas (2022-2025), totalizando 20,928 registros. Mediante la columna `codigoconvocatoria`, se creó una variable binaria `es_contratacion_directa` en el dataset principal, identificando 20,575 registros (7.7% del total) correspondientes a este tipo de proceso.
+ 
+Las causales más frecuentes de contratación directa fueron:
+ 
+- Situación de emergencia: 34.5%
+- Proveedor único: 19.9%
+- Desabastecimiento inminente: 16.9%
+- Arrendamiento o adquisición de bienes inmuebles existentes: 16.5%
+### Hipótesis evaluada
+ 
+Se planteó la hipótesis de que las contrataciones directas, al no pasar por un proceso competitivo, estarían sobrerrepresentadas en el Cluster 3 (sobrecosto extremo).
+ 
+### Resultado
+ 
+| Cluster | % Contrataciones Directas |
+|---|---|
+| 0 (Normal) | 9.31% |
+| 1 (Pago menor al presupuestado) | 0.65% |
+| 2 (Procesos largos) | 0.31% |
+| 3 (Sobrecosto extremo) | 1.79% |
+ 
+**La hipótesis no se confirmó.** El Cluster 0 (comportamiento normal) presenta la mayor proporción de contrataciones directas (9.31%), mientras que el Cluster 3 (sobrecosto extremo) presenta una proporción menor (1.79%).
+ 
+### Interpretación
+ 
+Una posible explicación es que las contrataciones directas, especialmente aquellas justificadas por proveedor único o emergencia, suelen tener montos pactados desde el inicio del proceso, con poco margen de variación posterior entre lo referencial y lo adjudicado. En contraste, los sobrecostos extremos detectados parecen estar más asociados a procesos competitivos (licitaciones, adjudicaciones simplificadas), donde el monto referencial podría haberse calculado de forma incorrecta o haber sido modificado significativamente durante el proceso.
+ 
+Este resultado no descarta que existan irregularidades en las contrataciones directas; sugiere que, de existir, estas no se manifiestan principalmente como desviaciones extremas entre el monto referencial y el monto adjudicado, sino que requerirían otras variables (por ejemplo, recurrencia de proveedores, tiempos de aprobación) para ser detectadas.
+
 
 ## Visualizaciones
 
@@ -196,9 +231,9 @@ jupyter notebook notebooks/01_exploracion.ipynb
 
 ## Próximos pasos
 
-- Incorporar datasets adicionales disponibles (Contrataciones Directas, Consorcios, Convocatorias, Proveedores) para enriquecer el modelo con variables como tipo de proceso, recurrencia de proveedores y consorcios.
-- Aplicar clustering jerárquico y DBSCAN sobre el conjunto completo de variables de comportamiento para comparar resultados con K-means.
-- Incorporar variables categóricas (tipo de entidad, tipo de proceso de selección) mediante codificación.
+- Incorporar el dataset de Proveedores y Consorcios para evaluar la concentración de adjudicaciones por proveedor.
+- Aplicar clustering jerárquico y DBSCAN sobre el conjunto completo de variables de comportamiento, incluyendo `es_contratacion_directa`, para comparar resultados con K-means.
+- Incorporar variables categóricas adicionales (tipo de entidad, tipo de proceso de selección) mediante codificación.
 
 ## Autora
 
