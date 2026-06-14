@@ -150,6 +150,39 @@ Una posible explicación es que las contrataciones directas, especialmente aquel
 Este resultado no descarta que existan irregularidades en las contrataciones directas; sugiere que, de existir, estas no se manifiestan principalmente como desviaciones extremas entre el monto referencial y el monto adjudicado, sino que requerirían otras variables (por ejemplo, recurrencia de proveedores, tiempos de aprobación) para ser detectadas.
 
 
+## Análisis adicional: Concentración de proveedores
+ 
+Se analizó la distribución de adjudicaciones por proveedor (`ruc_proveedor`), con el objetivo de identificar posibles patrones de concentración del mercado de contratación pública.
+ 
+### Distribución general
+ 
+Sobre 104,551 proveedores distintos que participaron entre 2022 y 2025:
+ 
+| Estadístico | Valor |
+|---|---|
+| Promedio de ítems ganados por proveedor | 2.55 |
+| Mediana (percentil 50) | 1 |
+| Percentil 75 | 1 |
+| Máximo | 2,191 |
+ 
+El 75% de los proveedores ganó un único ítem en el periodo analizado, mientras que el proveedor con mayor participación ganó 2,191 ítems, una concentración considerablemente mayor al promedio.
+ 
+### Caso de mayor concentración
+ 
+El proveedor con más adjudicaciones fue **Grupo Santa Fe S.A.C.** (RUC 20511037001), con las siguientes características:
+ 
+- 2,191 ítems adjudicados
+- 295 entidades públicas distintas como clientes
+- Monto total adjudicado: S/. 439,933,852.92
+- Monto promedio por ítem: S/. 200,791.35
+- 100% de sus adjudicaciones corresponden a la categoría "Bien" (ningún servicio ni obra)
+### Interpretación
+ 
+Si bien el volumen de adjudicaciones de este proveedor es considerablemente mayor al promedio, las características del caso (diversificación entre 295 entidades distintas, montos por ítem de magnitud media, y especialización en una sola categoría de objeto contractual) son consistentes con el perfil de un proveedor establecido a nivel nacional en el suministro de bienes, más que con un patrón de favoritismo hacia una entidad específica.
+ 
+Este análisis ilustra la importancia de complementar los indicadores de concentración con variables de contexto (diversificación de clientes, tipo de objeto contractual) antes de calificar un patrón como anómalo.
+
+
 ## Visualizaciones
 
 El notebook incluye:
@@ -157,6 +190,8 @@ El notebook incluye:
 - Dendrograma jerárquico (muestra de 2,000 registros)
 - Gráfico de dispersión: clusters por monto referencial vs. diferencia porcentual
 - Gráfico de dispersión: clusters de comportamiento (días de proceso vs. diferencia porcentual)
+
+![Distribución de clusters](results/resumen_clusters.png)
 
 ## Tecnologías utilizadas
 
@@ -234,6 +269,32 @@ jupyter notebook notebooks/01_exploracion.ipynb
 - Incorporar el dataset de Proveedores y Consorcios para evaluar la concentración de adjudicaciones por proveedor.
 - Aplicar clustering jerárquico y DBSCAN sobre el conjunto completo de variables de comportamiento, incluyendo `es_contratacion_directa`, para comparar resultados con K-means.
 - Incorporar variables categóricas adicionales (tipo de entidad, tipo de proceso de selección) mediante codificación.
+
+
+## Conclusiones generales
+ 
+Este proyecto aplicó técnicas de clustering no supervisado (K-means, clustering jerárquico y DBSCAN) sobre 267,111 registros de adjudicaciones públicas en Perú (2022-2025), con el objetivo de identificar contrataciones cuyo comportamiento se desvía significativamente del resto.
+ 
+### Principales hallazgos
+ 
+1. **El comportamiento normal domina el dataset.** El 81.5% de las contrataciones presentan diferencias pequeñas entre el monto presupuestado y el pagado, y tiempos de proceso cercanos al promedio (~25 días).
+2. **Existen patrones de anomalía claramente distinguibles y de distinta naturaleza:**
+   - Un grupo de 168 contrataciones (0.06%) con sobrecostos extremos (en promedio, +369.8% sobre lo presupuestado), detectado mediante K-means.
+   - Un grupo adicional, detectado mediante DBSCAN, de contrataciones con duraciones de proceso atípicamente largas (270 a 548 días frente a un promedio de 32 días).
+   - Estos dos tipos de anomalía (de magnitud y de tiempo) no necesariamente coinciden en los mismos registros, lo que sugiere que corresponden a fenómenos distintos.
+3. **Las hipótesis exploradas no siempre se confirmaron, y eso es informativo.** Se esperaba que las contrataciones directas estuvieran sobrerrepresentadas en el grupo de sobrecosto extremo; los datos mostraron lo contrario (1.79% vs. 9.31% en el grupo normal), sugiriendo que el fenómeno de sobrecosto extremo está más asociado a procesos competitivos.
+4. **La concentración de proveedores es alta pero no necesariamente irregular.** Si bien el 75% de los proveedores ganó un solo ítem en 4 años y el proveedor líder ganó 2,191, el análisis de contexto (diversificación entre 295 entidades, montos medios, especialización en una categoría) es consistente con un proveedor de gran escala más que con un patrón de favoritismo puntual.
+### Valor del enfoque
+ 
+El clustering no determina por sí mismo la existencia de irregularidades, pero permite **reducir el universo de revisión** de 267,111 registros a un conjunto acotado y priorizado (78 casos de sobrecosto extremo verificados, más los grupos identificados por DBSCAN), sobre el cual un perito contable podría enfocar su análisis.
+ 
+### Aprendizajes técnicos del proyecto
+ 
+- La elección de variables determina qué tipo de anomalía detecta el modelo: un primer intento con variables de monto fue dominado por el tamaño del contrato; el cambio a variables de comportamiento (diferencia porcentual y duración) permitió detectar anomalías independientes de la escala.
+- Algoritmos distintos (K-means y DBSCAN) son sensibles a distintos tipos de anomalía, por lo que su uso combinado ofrece una visión más completa que el uso de uno solo.
+- DBSCAN, al requerir el cálculo de distancias entre todos los pares de puntos, no escala a datasets de cientos de miles de registros sin técnicas de muestreo.
+- Validar hipótesis con datos adicionales (contrataciones directas, concentración de proveedores) es tan valioso cuando refuta una hipótesis inicial como cuando la confirma.
+ 
 
 ## Autora
 
