@@ -2,8 +2,8 @@ import logging
 import numpy as np
 import pandas as pd
 from sklearn.cluster import DBSCAN, KMeans
-from sklearn.ensemble import silhouette_score, davies_bouldin_score, calinski_harabasz_score
 from sklearn.ensemble import IsolationForest
+from sklearn.metrics import silhouette_score, davies_bouldin_score, calinski_harabasz_score  # ← línea separada
 from sklearn.neighbors import NearestNeighbors
 from sklearn.preprocessing import StandardScaler
 from .config import (DBSCAN_EPS, DBSCAN_MIN_SAMPLES, DBSCAN_RANDOM_STATE, DBSCAN_SAMPLE_SIZE, KMEANS_N_CLUSTERS, KMEANS_N_INIT, KMEANS_RANDOM_STATE)
