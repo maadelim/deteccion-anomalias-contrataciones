@@ -1,5 +1,9 @@
 # Detección de Anomalías en Contrataciones Públicas del Perú
 
+
+[![CI — Tests](https://github.com/maadelim/deteccion-anomalias-contrataciones/actions/workflows/ci.yml/badge.svg)](https://github.com/maadelim/deteccion-anomalias-contrataciones/actions/workflows/ci.yml)
+[![Python 3.11](https://img.shields.io/badge/Python-3.11-blue.svg)](https://www.python.org/)
+
 Proyecto de ciencia de datos aplicado a la identificación de patrones anómalos en contrataciones públicas registradas en el sistema CONOSCE/OSCE, mediante técnicas de clustering no supervisado.
 
 ---
