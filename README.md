@@ -90,6 +90,18 @@ Se aplicó el método del codo sobre las variables de comportamiento, evaluando 
 
 Se aplicó K-means sobre las 267,111 contrataciones con monto referencial distinto de cero.
 
+### Validación cuantitativa del modelo
+
+La elección de k=4 fue validada con tres métricas internas calculadas sobre los 267,111 registros:
+
+| Métrica | Valor | Interpretación |
+|---------|-------|----------------|
+| Silhouette Score | **0.5601** | Bueno (↑ mejor, máx=1). Clusters bien separados entre sí. |
+| Davies-Bouldin Index | **0.6871** | Muy bueno (↓ mejor, mín=0). Alta cohesión interna. |
+| Calinski-Harabasz Score | **138,159** | Excelente (↑ mejor). Refleja la fuerte separación del Cluster 3. |
+
+Los tres indicadores confirman que k=4 es una partición sólida para estos datos. El valor elevado de Calinski-Harabasz se explica por la separación extrema del Cluster 3 (sobrecosto del +369.8%) respecto al resto del dataset.
+
 ---
 
 ## Resultados
@@ -285,7 +297,7 @@ jupyter notebook notebooks/02_pipeline.ipynb
 
 ## Próximos pasos
 
-- Evaluar **Isolation Forest** como alternativa directa para detección de anomalías, sin necesidad de elegir `k`.
+- ~~Evaluar Isolation Forest~~ ✅ **Implementado** en `src/clustering.py` como `aplicar_isolation_forest()`.
 - Incorporar variables categóricas adicionales (tipo de entidad, tipo de proceso de selección) mediante codificación One-Hot o Target Encoding.
 - Explorar **HDBSCAN** (disponible en scikit-learn ≥ 1.3) para escalar el análisis de densidad al dataset completo sin muestreo.
 - Incorporar recurrencia de proveedores y tiempos de aprobación como variables para detectar irregularidades en contrataciones directas.
