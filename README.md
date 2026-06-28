@@ -229,7 +229,6 @@ deteccion-anomalias-contrataciones/
 ├── results/
 │   ├── casos_sospechosos.csv   # 78 casos de sobrecosto extremo priorizados
 │   └── resumen_clusters.png    # Visualización de clusters K-Means y DBSCAN
-├── requirements.txt            # Dependencias mínimas del proyecto
 ├── requirements.txt      # Dependencias mínimas del proyecto
 ├── requirements-dev.txt  # Dependencias de desarrollo (JupyterLab, etc.)
 ├── Makefile              # Comandos para reproducir el proyecto (make install, make test, make run)
@@ -259,17 +258,6 @@ Esta separación permite que el pipeline sea fácilmente extensible: incorporar 
 
 ---
 
-## Cómo reproducir el proyecto
-
-```bash
-# Clonar el repositorio
-git clone https://github.com/maadelim/deteccion-anomalias-contrataciones.git
-cd deteccion-anomalias-contrataciones
-
-# Crear y activar entorno virtual
-python -m venv venv
-venv\Scripts\activate        # Windows
-source venv/bin/activate     # Mac/Linux
 
 ## Cómo reproducir el proyecto
 
