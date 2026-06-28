@@ -230,7 +230,9 @@ deteccion-anomalias-contrataciones/
 │   ├── casos_sospechosos.csv   # 78 casos de sobrecosto extremo priorizados
 │   └── resumen_clusters.png    # Visualización de clusters K-Means y DBSCAN
 ├── requirements.txt            # Dependencias mínimas del proyecto
-├── requirements-dev.txt        # Dependencias de desarrollo (JupyterLab, etc.)
+├── requirements.txt      # Dependencias mínimas del proyecto
+├── requirements-dev.txt  # Dependencias de desarrollo (JupyterLab, etc.)
+├── Makefile              # Comandos para reproducir el proyecto (make install, make test, make run)
 └── README.md
 
  
@@ -269,8 +271,32 @@ python -m venv venv
 venv\Scripts\activate        # Windows
 source venv/bin/activate     # Mac/Linux
 
-# Instalar dependencias
+## Cómo reproducir el proyecto
+
+### Opción 1 — Con Make (recomendado)
+
+```bash
+git clone https://github.com/maadelim/deteccion-anomalias-contrataciones.git
+cd deteccion-anomalias-contrataciones
+python -m venv venv
+source venv/bin/activate  # Mac/Linux
+venv\Scripts\activate     # Windows
+make install
+make test
+make run
+```
+
+### Opción 2 — Manual
+
+```bash
+git clone https://github.com/maadelim/deteccion-anomalias-contrataciones.git
+cd deteccion-anomalias-contrataciones
+python -m venv venv
+source venv/bin/activate  # Mac/Linux
+venv\Scripts\activate     # Windows
 pip install -r requirements.txt
+jupyter notebook notebooks/01_exploracion.ipynb
+```
 
 # (Opcional) Instalar dependencias de desarrollo
 pip install -r requirements-dev.txt
@@ -298,6 +324,9 @@ jupyter notebook notebooks/02_pipeline.ipynb
 ## Próximos pasos
 
 - ~~Evaluar Isolation Forest~~ ✅ **Implementado** en `src/clustering.py` como `aplicar_isolation_forest()`.
+- Análisis de sensibilidad del número de clusters ✅ Evaluado k=2..6 con Silhouette Score (ver `results/sensibilidad_k.png`).
+- Comparación cuantitativa de los 3 modelos ✅ Tabla comparativa K-Means / DBSCAN / Isolation Forest en `01_exploracion.ipynb`.
+- Persistencia del modelo ✅ Scaler y KMeans serializados con joblib en `results/` para inferencia sin reentrenar.
 - Incorporar variables categóricas adicionales (tipo de entidad, tipo de proceso de selección) mediante codificación One-Hot o Target Encoding.
 - Explorar **HDBSCAN** (disponible en scikit-learn ≥ 1.3) para escalar el análisis de densidad al dataset completo sin muestreo.
 - Incorporar recurrencia de proveedores y tiempos de aprobación como variables para detectar irregularidades en contrataciones directas.
